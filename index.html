@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>PHC-Sentinel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>PHC-Sentinel</h1>
+    <p class="sub">Live stock, forecast, early-warning and redistribution across a Primary Health Centre network. Demo uses synthetic data for 25 PHCs in 5 districts.</p>
+
+    <div class="bar">
+      <label>Medicine<select id="med"></select></label>
+      <label>Emergency scenario<select id="scn"></select></label>
+      <label>Severity <span id="sevv">60%</span><input id="sev" type="range" min="0" max="100" value="60"></label>
+      <button id="apply">Approve all transfers</button>
+      <button id="reset" class="alt">Reset stock</button>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Network map</h2>
+        <svg id="map" viewBox="0 0 100 60" role="img" aria-label="Map of PHCs coloured by stock status"></svg>
+        <div class="legend">
+          <span><i class="tag green"></i>Safe</span>
+          <span><i class="tag amber"></i>Watch</span>
+          <span><i class="tag red"></i>Stock-out risk or no pharmacist</span>
+          Dashed lines: suggested transfers
+        </div>
+        <div id="detail" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <h2>Early warnings</h2>
+        <div class="list" id="alerts"></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Recommended redistribution</h2>
+        <div class="scroll" id="plan"></div>
+        <p class="mut">Greedy min-cost matching on distance, with soon-to-expire stock moved first.</p>
+      </div>
+      <div class="card">
+        <h2>Federated forecaster across BRICS</h2>
+        <p class="mut">Each country trains on its own data. Only 2 model weights per round leave the country. Demand = w1 × footfall + w2 × outbreak signal. The dashboard forecast uses the weights learned here.</p>
+        <svg id="chart" viewBox="0 0 300 120" role="img" aria-label="Weights converging over federated rounds"></svg>
+        <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:6px">
+          <label class="mut" style="display:flex;flex-direction:column">
+            Privacy noise (DP) <span id="dpv">0.00</span>
+            <input id="dp" type="range" min="0" max="30" value="0">
+          </label>
+          <button id="train">Retrain</button>
+        </div>
+        <div id="fedinfo" class="mut" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
